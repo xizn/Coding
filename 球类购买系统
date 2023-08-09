@@ -1,0 +1,317 @@
+#include <stdlib.h>
+#include<stdio.h>
+#include<string.h>
+typedef struct ball
+{
+	char name[20];
+	int num;
+	struct ball*next;
+}Ball;
+void meun(){
+     printf("\n\n\n");
+	 printf("\t\t-------------------------------------------------\n");
+	 printf("\t\t||              ----------------               ||\n"); 
+	 printf("\t\t||**************球类购买管理系统***************||\n");
+	 printf("\t\t||              ----------------               ||\n");
+	 printf("\t\t||                                             ||\n");
+	 printf("\t\t||_______________1.录入购买信息________________||\n");
+	 printf("\t\t||_______________2.删除购买信息________________||\n");
+	 printf("\t\t||_______________3.修改购买信息________________||\n");
+	 printf("\t\t||_______________4.查询购买信息________________||\n");
+	 printf("\t\t||_______________5.显示所有购买________________||\n");
+	 printf("\t\t||_______________6.清空录入信息______________ _||\n");
+	 printf("\t\t||_______________7.系统中1是继续_______________||\n");
+	 printf("\t\t||_______________8.系统中0是退出_______________||\n");
+	 printf("\t\t||                                             ||\n");
+	 printf("\t\t||*********************************************||\n\n\n");
+     printf("\t\t请选择一个数字，点击回车(enter)表示确定\n\n");
+	 printf("\t\t我选的数字是：");
+}
+
+
+Ball *find(int num,Ball* head){
+	Ball *p;
+    p=head;
+    int t=1;
+    if(head!=NULL)
+    {
+        while(p->next!=NULL&&t!=num)
+       {
+        t++;
+        p=p->next;
+       } 
+    }
+    return p;
+}
+Ball *creat(Ball *head){
+     Ball *p1,*p2,*p;
+	 int c,n;
+	
+	 if(head==NULL){
+		p1=p2=(Ball*)malloc(sizeof(Ball));
+	    n=0;
+		printf("\t\t请输入购买的数量 ： ");
+		scanf("%d",&p1->num);
+		printf("\t\t请输入购买的球名 ： ");
+		scanf("%s",&p1->name);
+		printf("\n");
+	    while (1)
+	    {
+		n++;
+		if(n==1)
+		head=p1;
+		else
+		p2->next=p1;
+		p2=p1;
+		printf("\n\t\t是否继续录入(1/0):\t");
+	    scanf("%d",&c);
+		if(c==0)break;
+		else printf("\n");
+		p1=(Ball*)malloc(sizeof(Ball));
+		printf("\t\t请输入购买的数量 ： ");
+		scanf("%d",&p1->num);
+		printf("\t\t请输入购买的球名 ： ");
+		scanf("%s",&p1->name);
+		}
+	 }
+	 else
+	 {
+        p2=head;
+		while(p2->next!=NULL)
+		{
+			p2=p2->next;
+		}
+        p1=(Ball*)malloc(sizeof(Ball));
+		printf("\t\t请输入购买的数量 ： ");
+		scanf("%d",&p1->num);
+		printf("\t\t请输入购买的球名 ： ");
+		scanf("%s",&p1->name);
+		printf("\n");
+		while (1)
+		{
+		p2->next=p1;
+		p2 = p1;	
+		printf("\n\t\t是否继续录入(1/0):\t");
+	    scanf("%d",&c);
+		if(c==0)break;
+		else printf("\n");
+		p1=(Ball*)malloc(sizeof(Ball));
+        printf("\t\t请输入购买的数量 ： ");
+		scanf("%d",&p1->num);
+		printf("\t\t请输入购买的球名 ： ");
+		scanf("%s",&p1->name);
+		printf("\n");
+		}
+	 }
+	p2->next=NULL;
+	return head;
+}
+Ball* delete(Ball *head){
+	Ball*p, *p1,*p2,*pp;
+	int c;
+	p=head;
+	int position;
+	do{
+		if(head!=NULL){
+    printf("\t\t\t请输入您要删除第几个商品，mygod!: ");
+	scanf("%d",&position); 
+	pp=find(position,p);
+	free(pp);
+	if(position==1&&pp->next==NULL)p=NULL;
+	else if(position==1&&p->next!=NULL){
+		p1=find(position+1,p);
+		p=p1;
+	}
+	else if(position!=1&&pp->next==NULL){
+		p1=find(position-1,p);
+		p1->next=NULL;
+	}
+	else{
+		p1=find(position-1,p);
+	    p2=find(position+1,p);
+		p1->next=p2;
+	}
+	printf("\t\t\t请问是否要继续删除？(1/0)   :");
+	scanf("%d",&c);
+	if(c==0)break;
+	}
+	else
+	{
+		printf("\t\t\t你的购物清单空空如也，先录入信息吧~的o(￣▽￣)ｄ\n\n\n");
+		break;
+	}
+	}while(1);
+	return p;
+	}
+Ball* modify(Ball *head){
+     if(head!=NULL){
+		Ball* p;
+	 while(1){
+	 Ball *p1,*p3,*p4;
+	 int num,c;
+	 p=head;
+	 printf("\t\t\t我要修改的商品序号是: ");
+	 scanf("%d",&num);
+	 printf("\n");
+     p1=find(num,p);
+	 printf("\t\t\t数量：%6d\t球类：%s\n",p1->num,p1->name);
+	 free(p1);
+	 if(num==1&&p1->next!=NULL){
+		p4=find(num+1,p);
+		p1=(Ball*)malloc(sizeof(Ball));
+	    printf("\t\t\t请修改购买的数量 ： ");
+	    scanf("%d",&p1->num);
+	    printf("\t\t\t请修改购买的球名 ： ");
+	    scanf(" %s",&p1->name);
+		p1->next=p4;
+	 }
+	 else if(num!=1&&p1->next==NULL){
+		p3=find(num-1,p);
+		p1=(Ball*)malloc(sizeof(Ball));
+	    printf("\t\t\t请修改购买的数量 ： ");
+	    scanf("%d",&p1->num);
+	    printf("\t\t\t请修改购买的球名 ： ");
+	    scanf(" %s",&p1->name);
+		p3->next=p1;
+		p1->next=NULL;
+	 }
+	 else if(num==1&&p1->next==NULL){
+        p1=(Ball*)malloc(sizeof(Ball));
+	 printf("\t\t\t请修改购买的数量 ： ");
+	 scanf("%d",&p1->num);
+	 printf("\t\t\t请修改购买的球名 ： ");
+	 scanf(" %s",&p1->name);
+	 p1->next=NULL;
+	 }
+	 else if(num!=1&&p1->next!=NULL){
+		p3=find(num-1,p);
+	    p4=find(num+1,p);
+		p1=(Ball*)malloc(sizeof(Ball));
+	    printf("\t\t\t请修改购买的数量 ： ");
+	    scanf("%d",&p1->num);
+	    printf("\t\t\t请修改购买的球名 ： ");
+	    scanf(" %s",&p1->name);
+		p3->next=p1;
+		p1->next=p4;
+	 }
+	    
+	 printf("\n");
+	 printf("\t\t\t请问是否要继续修改？(1/0)   :");
+	 scanf(" %d",&c);
+	 if(c==0)break;
+	 }
+	 return p;
+	 }
+	 else{
+		printf("\t\t\t你的购物清单空空如也，先录入信息吧~的o(￣▽￣)ｄ\n\n\n");
+		return head;
+	 }
+	 
+	
+}
+void search(Ball *head){
+    int c;
+	int position;
+	Ball *p;
+	do{
+    p=head;
+    int t=1;
+    if(head!=NULL)
+    {
+        printf("\t\t\t请输入您要查询第几个商品，mygod!: ");
+	    scanf("%d",&position);
+        while(p->next!=NULL&&t!=position)
+       {
+        t++;
+        p=p->next;
+       } 
+    }
+	else
+	{
+     printf("\t\t\t你的购物清单空空如也，先录入信息吧~的o(￣▽￣)ｄ\n\n\n");
+	 break;
+	}
+	printf("\t\t\t这是你要查询第%d个商品的信息： \n",position);
+    printf("\t\t\t%d.  ",position);
+	printf("数量：%d\t球类：%s\n",p->num,p->name);
+	printf("\t\t\t请问是否要继续查询？(1/0)   :");
+	scanf("%d",&c);
+	if(c==0)break;
+	}while(c!=0);
+	
+}
+void display(Ball* head){
+	Ball *p;
+	p=head;
+	int n=0;
+	if(head!=NULL)
+	{
+		printf("\t\t\t您的购买清单如下：\n\n");
+		do
+		{   n++;
+			printf("\t\t\t%d.  ",n);
+	        printf("数量：%6d\t球类：%s\n",p->num,p->name);
+			p=p->next;
+		} while (p!=NULL);
+
+	}
+	else
+	{
+     printf("\t\t\t你的购物清单空空如也，先录入信息吧~的o(￣▽￣)ｄ");
+	}
+
+}
+void main(){
+	meun();
+    int n;
+	Ball* head;
+	head=NULL;
+	while(scanf("%d",&n),n)
+	{
+
+		switch (n)
+		{
+		case 1:
+			{ 
+			head=creat(head);
+			meun();
+			break;}
+		case 2:
+			{ display(head);
+			head=delete(head);
+			display(head);
+			meun();
+			break;}
+		case 3:
+			{ 
+			  display(head);
+			  head=modify(head); 
+			  display(head);
+			meun();
+			break;}
+		case 4:
+			{ 
+			search(head);
+			meun();
+			break;}
+		case 5:
+			{ display(head);
+			meun();
+			break;}
+		case 7:
+			{
+				printf("\t\t还未开发，试试别的数字吧~~(*￣3￣)╭\n");
+			break;}
+		case 8:
+			{
+				printf("\t\t还未开发，试试别的数字吧~~(*￣3￣)╭\n");
+			break;}
+		case 6:
+			{printf("\t\t(〃￣︶￣)人(￣︶￣〃)\n\n\t按0清空所有录入信息并结束该程序\n\n");
+			printf("\t\t\t\t毁灭吧！！！ ：");
+			break;}
+		
+		}
+	}
+	system("pause");
+}
